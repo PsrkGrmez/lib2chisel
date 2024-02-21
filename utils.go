@@ -1,7 +1,6 @@
-package main
+package libv2ray
 
 import (
-	"C"
 	"encoding/base64"
 	"math/rand"
 	"time"

@@ -1,7 +1,6 @@
 package tunnel
 
 import (
-	"C"
 	"encoding/gob"
 	"io"
 	"net"

@@ -5,7 +5,6 @@ package ccrypto
 // [a|...] -> sha512(a) -> [b|output] -> sha512(b)
 
 import (
-	"C"
 	"crypto/sha512"
 	"io"
 )

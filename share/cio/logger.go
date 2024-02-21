@@ -1,13 +1,12 @@
 package cio
 
 import (
-	"C"
 	"fmt"
 	"log"
 	"os"
 )
 
-// Logger is pkg/log Logger with prefixing and 2 log levels
+//Logger is pkg/log Logger with prefixing and 2 log levels
 type Logger struct {
 	Info, Debug bool
 	//internal

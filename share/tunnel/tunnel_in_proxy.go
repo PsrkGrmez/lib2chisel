@@ -1,7 +1,6 @@
 package tunnel
 
 import (
-	"C"
 	"context"
 	"io"
 	"net"

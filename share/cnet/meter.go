@@ -1,7 +1,6 @@
 package cnet
 
 import (
-	"C"
 	"io"
 	"net"
 	"sync/atomic"

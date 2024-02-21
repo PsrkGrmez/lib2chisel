@@ -1,7 +1,6 @@
 package chclient
 
 import (
-	"C"
 	"crypto/elliptic"
 	"log"
 	"net/http"

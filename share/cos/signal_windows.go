@@ -1,10 +1,8 @@
-//go:build windows
-// +build windows
+//+build windows
 
 package cos
 
 import (
-	"C"
 	"time"
 )
 

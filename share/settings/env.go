@@ -1,7 +1,6 @@
 package settings
 
 import (
-	"C"
 	"os"
 	"strconv"
 	"strings"

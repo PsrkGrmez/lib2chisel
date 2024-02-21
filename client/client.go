@@ -1,7 +1,6 @@
 package chclient
 
 import (
-	"C"
 	"context"
 	"crypto/md5"
 	"crypto/tls"
@@ -72,7 +71,6 @@ type Client struct {
 
 // NewClient creates a new client instance
 func NewClient(c *Config) (*Client, error) {
-
 	//apply default scheme
 	if !strings.HasPrefix(c.Server, "http") {
 		c.Server = "http://" + c.Server
@@ -94,11 +92,9 @@ func NewClient(c *Config) (*Client, error) {
 			u.Host = u.Host + ":80"
 		}
 	}
-
 	hasReverse := false
 	hasSocks := false
 	hasStdio := false
-
 	client := &Client{
 		Logger: cio.NewLogger("client"),
 		config: c,
@@ -108,7 +104,6 @@ func NewClient(c *Config) (*Client, error) {
 		server:    u.String(),
 		tlsConfig: nil,
 	}
-
 	//set default log level
 	client.Logger.Info = true
 	//configure tls
@@ -118,7 +113,6 @@ func NewClient(c *Config) (*Client, error) {
 			tc.ServerName = c.TLS.ServerName
 		}
 		//certificate verification config
-
 		if c.TLS.SkipVerify {
 			client.Infof("TLS verification disabled")
 			tc.InsecureSkipVerify = true
@@ -133,7 +127,6 @@ func NewClient(c *Config) (*Client, error) {
 				tc.RootCAs = rootCAs
 			}
 		}
-
 		//provide client cert and key pair for mtls
 		if c.TLS.Cert != "" && c.TLS.Key != "" {
 			c, err := tls.LoadX509KeyPair(c.TLS.Cert, c.TLS.Key)
@@ -147,7 +140,6 @@ func NewClient(c *Config) (*Client, error) {
 		client.tlsConfig = tc
 	}
 	//validate remotes
-
 	for _, s := range c.Remotes {
 		r, err := settings.DecodeRemote(s)
 		if err != nil {
@@ -167,11 +159,10 @@ func NewClient(c *Config) (*Client, error) {
 		}
 		//confirm non-reverse tunnel is available
 		if !r.Reverse && !r.Stdio && !r.CanListen() {
-			continue
+			return nil, fmt.Errorf("Client cannot listen on %s", r.String())
 		}
 		client.computed.Remotes = append(client.computed.Remotes, r)
 	}
-
 	//outbound proxy
 	if p := c.Proxy; p != "" {
 		client.proxyURL, err = url.Parse(p)
@@ -180,7 +171,6 @@ func NewClient(c *Config) (*Client, error) {
 		}
 	}
 	//ssh auth and config
-
 	user, pass := settings.ParseAuth(c.Auth)
 	client.sshConfig = &ssh.ClientConfig{
 		User:            user,
@@ -189,7 +179,6 @@ func NewClient(c *Config) (*Client, error) {
 		HostKeyCallback: client.verifyServer,
 		Timeout:         settings.EnvDuration("SSH_TIMEOUT", 30*time.Second),
 	}
-
 	//prepare client tunnel
 	client.tunnel = tunnel.New(tunnel.Config{
 		Logger:    client.Logger,
@@ -202,9 +191,7 @@ func NewClient(c *Config) (*Client, error) {
 }
 
 // Run starts client and blocks while connected
-
 func (c *Client) Run() error {
-
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 	if err := c.Start(ctx); err != nil {

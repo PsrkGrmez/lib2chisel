@@ -1,7 +1,6 @@
 package cio
 
 import (
-	"C"
 	"io"
 	"log"
 	"sync"

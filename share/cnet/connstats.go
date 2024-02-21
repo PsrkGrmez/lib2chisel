@@ -1,12 +1,11 @@
 package cnet
 
 import (
-	"C"
 	"fmt"
 	"sync/atomic"
 )
 
-// ConnCount is a connection counter
+//ConnCount is a connection counter
 type ConnCount struct {
 	count int32
 	open  int32

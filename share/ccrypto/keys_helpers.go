@@ -1,7 +1,6 @@
 package ccrypto
 
 import (
-	"C"
 	"crypto/ecdsa"
 	"crypto/elliptic"
 	"crypto/rand"

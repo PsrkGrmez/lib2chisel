@@ -1,7 +1,6 @@
 package settings
 
 import (
-	"C"
 	"encoding/json"
 	"errors"
 	"fmt"

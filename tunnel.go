@@ -1,9 +1,4 @@
-package main
-
-import (
-	"C"
-	"log"
-)
+package libv2ray
 
 type Tunnel struct {
 	svType string
@@ -25,11 +20,8 @@ func NewTunnel(
 }
 
 func (args *Tunnel) Start() {
-
 	var commands = []string{args.svType, args.server, args.point}
 	commands = commands[1:]
-	log.Println(commands)
 	client(commands)
-
-	return
+	return 
 }

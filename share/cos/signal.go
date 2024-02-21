@@ -1,10 +1,8 @@
-//go:build !windows
-// +build !windows
+//+build !windows
 
 package cos
 
 import (
-	"C"
 	"log"
 	"os"
 	"os/signal"
@@ -15,8 +13,8 @@ import (
 	"github.com/jpillora/sizestr"
 )
 
-// GoStats prints statistics to
-// stdout on SIGUSR2 (posix-only)
+//GoStats prints statistics to
+//stdout on SIGUSR2 (posix-only)
 func GoStats() {
 	//silence complaints from windows
 	const SIGUSR2 = syscall.Signal(0x1f)
@@ -32,8 +30,8 @@ func GoStats() {
 	}
 }
 
-// AfterSignal returns a channel which will be closed
-// after the given duration or until a SIGHUP is received
+//AfterSignal returns a channel which will be closed
+//after the given duration or until a SIGHUP is received
 func AfterSignal(d time.Duration) <-chan struct{} {
 	ch := make(chan struct{})
 	go func() {

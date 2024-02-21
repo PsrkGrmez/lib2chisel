@@ -1,2 +1,2 @@
-# lib2chisel
-Android Libv2ray Mixed with Chisel library.
+# lib2chisel ( dont clone )
+this project is not working yet.

@@ -1,8 +1,4 @@
-package main
-
-import (
-	"C"
-)
+package libv2ray
 
 type IService interface {
 	Start()

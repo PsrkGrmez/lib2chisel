@@ -1,7 +1,6 @@
 package settings
 
 import (
-	"C"
 	"regexp"
 	"strings"
 )

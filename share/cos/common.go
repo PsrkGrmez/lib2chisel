@@ -1,15 +1,14 @@
 package cos
 
 import (
-	"C"
 	"context"
 	"os"
 	"os/signal"
 	"time"
 )
 
-// InterruptContext returns a context which is
-// cancelled on OS Interrupt
+//InterruptContext returns a context which is
+//cancelled on OS Interrupt
 func InterruptContext() context.Context {
 	ctx, cancel := context.WithCancel(context.Background())
 	go func() {
@@ -22,8 +21,8 @@ func InterruptContext() context.Context {
 	return ctx
 }
 
-// SleepSignal sleeps for the given duration,
-// or until a SIGHUP is received
+//SleepSignal sleeps for the given duration,
+//or until a SIGHUP is received
 func SleepSignal(d time.Duration) {
 	<-AfterSignal(d)
 }

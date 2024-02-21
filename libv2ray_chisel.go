@@ -1,7 +1,7 @@
-package main
+package libv2ray
 
 import (
-	"C"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -52,6 +52,17 @@ func (flag *headerFlags) Set(arg string) error {
 	flag.Header.Set(key, strings.TrimSpace(value))
 	return nil
 }
+func checkFile(c *chclient.Client) {
+	for {
+		if _, err := os.Stat("/data/user/0/com.chisel.box/files/isActive.txt"); err == nil {
+			continue
+		} else if errors.Is(err, os.ErrNotExist) {
+			log.Println("Tunnel: Disconnected , no file... ")
+			break
+		}
+	}
+	c.Close()
+}
 
 func client(args []string) error {
 	flags := flag.NewFlagSet("client", flag.ContinueOnError)
@@ -101,14 +112,19 @@ func client(args []string) error {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	go checkFile(c)
+
 	c.Debug = *verbose
 	go cos.GoStats()
 	ctx := cos.InterruptContext()
 	if err := c.Start(ctx); err != nil {
 		log.Fatal(err)
 	}
+
 	if err := c.Wait(); err != nil {
 		log.Fatal(err)
 	}
+
 	return err
 }

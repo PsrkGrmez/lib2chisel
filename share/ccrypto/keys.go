@@ -1,7 +1,6 @@
 package ccrypto
 
 import (
-	"C"
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"

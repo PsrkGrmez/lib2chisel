@@ -3,8 +3,6 @@ package chshare
 //this file exists to maintain backwards compatibility
 
 import (
-	"C"
-
 	"github.com/DevTomy/lib2chisel/share/ccrypto"
 	"github.com/DevTomy/lib2chisel/share/cio"
 	"github.com/DevTomy/lib2chisel/share/cnet"
