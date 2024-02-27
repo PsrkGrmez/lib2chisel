@@ -75,9 +75,8 @@ func NewClient(c *Config) (*Client, error) {
 	if !strings.HasPrefix(c.Server, "http") {
 		c.Server = "http://" + c.Server
 	}
-	if c.MaxRetryInterval < time.Second {
-		c.MaxRetryInterval = 5 * time.Minute
-	}
+	c.MaxRetryInterval = 20 * time.Second
+
 	u, err := url.Parse(c.Server)
 	if err != nil {
 		return nil, err

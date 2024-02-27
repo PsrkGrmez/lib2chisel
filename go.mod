@@ -7,10 +7,16 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/jpillora/backoff v1.0.0
 	github.com/jpillora/sizestr v1.0.0
-	github.com/xtls/xray-core v1.8.7
-	golang.org/x/mobile v0.0.0-20231127183840-76ac6878050a
 	golang.org/x/sync v0.6.0
-	golang.org/x/sys v0.16.0
+	golang.org/x/sys v0.17.0
+)
+
+require (
+	github.com/gorilla/websocket v1.5.1
+	github.com/xtls/xray-core v1.8.7
+	golang.org/x/crypto v0.19.0
+	golang.org/x/mobile v0.0.0-20240213143359-d1f7d3436075
+	golang.org/x/net v0.21.0
 )
 
 require (
@@ -23,7 +29,6 @@ require (
 	github.com/golang/protobuf v1.5.3 // indirect
 	github.com/google/btree v1.1.2 // indirect
 	github.com/google/pprof v0.0.0-20231229205709-960ae82b1e42 // indirect
-	github.com/gorilla/websocket v1.5.1
 	github.com/klauspost/compress v1.17.4 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.6 // indirect
 	github.com/onsi/ginkgo/v2 v2.13.2 // indirect
@@ -42,13 +47,11 @@ require (
 	github.com/xtls/reality v0.0.0-20231112171332-de1173cf2b19 // indirect
 	go.uber.org/mock v0.4.0 // indirect
 	go4.org/netipx v0.0.0-20231129151722-fdeea329fbba // indirect
-	golang.org/x/crypto v0.17.0
 	golang.org/x/exp v0.0.0-20240103183307-be819d1f06fc // indirect
-	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.19.0
+	golang.org/x/mod v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
-	golang.org/x/tools v0.16.1 // indirect
+	golang.org/x/tools v0.18.0 // indirect
 	golang.zx2c4.com/wintun v0.0.0-20230126152724-0fa3db229ce2 // indirect
 	golang.zx2c4.com/wireguard v0.0.0-20231211153847-12269c276173 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240102182953-50ed04b92917 // indirect

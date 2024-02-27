@@ -10,11 +10,11 @@ import (
 	"sync"
 	"time"
 
-	"golang.org/x/sys/unix"
 	v2net "github.com/xtls/xray-core/common/net"
 	"github.com/xtls/xray-core/features/dns"
 	"github.com/xtls/xray-core/features/outbound"
 	v2internet "github.com/xtls/xray-core/transport/internet"
+	"golang.org/x/sys/unix"
 )
 
 type protectSet interface {
@@ -138,24 +138,24 @@ func (d *ProtectedDialer) lookupAddr(addr string) (*resolved, error) {
 	IPs := make([]net.IP, 0)
 	//ipv6 is prefer, append ipv6 then ipv4
 	//ipv6 is not prefer, append ipv4 then ipv6
-	if(d.preferIPv6) {
+	if d.preferIPv6 {
 		for _, ia := range addrs {
-			if(ia.IP.To4() == nil) {
-				IPs = append(IPs, ia.IP)			 
+			if ia.IP.To4() == nil {
+				IPs = append(IPs, ia.IP)
 			}
-		}		
-	}
-	for _, ia := range addrs {
-		if(ia.IP.To4() != nil) {
-			IPs = append(IPs, ia.IP)	
 		}
 	}
-	if(!d.preferIPv6) {
+	for _, ia := range addrs {
+		if ia.IP.To4() != nil {
+			IPs = append(IPs, ia.IP)
+		}
+	}
+	if !d.preferIPv6 {
 		for _, ia := range addrs {
-			if(ia.IP.To4() == nil) {
-				IPs = append(IPs, ia.IP)			 
+			if ia.IP.To4() == nil {
+				IPs = append(IPs, ia.IP)
 			}
-		}		
+		}
 	}
 
 	rs := &resolved{

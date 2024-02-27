@@ -17,6 +17,8 @@ import (
 	"golang.org/x/crypto/ssh"
 )
 
+var ClientStatus string
+
 func (c *Client) connectionLoop(ctx context.Context) error {
 	//connection loop!
 	b := &backoff.Backoff{Max: c.config.MaxRetryInterval}
@@ -36,6 +38,7 @@ func (c *Client) connectionLoop(ctx context.Context) error {
 		//show error message and attempt counts (excluding disconnects)
 		if err != nil && err != io.EOF {
 			msg := fmt.Sprintf("Connection error: %s", err)
+
 			if attempt > 0 {
 				maxAttemptVal := fmt.Sprint(maxAttempt)
 				if maxAttempt < 0 {
@@ -43,11 +46,13 @@ func (c *Client) connectionLoop(ctx context.Context) error {
 				}
 				msg += fmt.Sprintf(" (Attempt: %d/%s)", attempt, maxAttemptVal)
 			}
+
 			c.Infof(msg)
 		}
 		//give up?
 		if maxAttempt >= 0 && attempt >= maxAttempt {
 			c.Infof("Give up")
+			ClientStatus = "disconnected"
 			break
 		}
 		d := b.Duration()
@@ -57,6 +62,7 @@ func (c *Client) connectionLoop(ctx context.Context) error {
 			continue //retry now
 		case <-ctx.Done():
 			c.Infof("Cancelled")
+			ClientStatus = "disconnected"
 			return nil
 		}
 	}
@@ -125,6 +131,7 @@ func (c *Client) connectionOnce(ctx context.Context) (connected bool, err error)
 	if len(configerr) > 0 {
 		return false, errors.New(string(configerr))
 	}
+	ClientStatus = "connected"
 	c.Infof("Connected (Latency %s)", time.Since(t0))
 	//connected, handover ssh connection for tunnel to use, and block
 	err = c.tunnel.BindSSH(ctx, sshConn, reqs, chans)

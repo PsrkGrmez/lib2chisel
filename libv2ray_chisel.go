@@ -1,7 +1,8 @@
 package libv2ray
 
+import "C"
+
 import (
-	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -31,6 +32,38 @@ type headerFlags struct {
 	http.Header
 }
 
+var globalClient *chclient.Client
+
+//export ChiselStart
+func ChiselStart(commands string) bool {
+	chclient.ClientStatus = "null"
+	var args = strings.Split(commands, " ")
+	if len(args) > 0 {
+		args = args[1:]
+	}
+	go client(args)
+	// Handle Client Connection Status For Android
+	timeout := time.After(10 * time.Second)
+	for {
+		select {
+		case <-timeout:
+			fmt.Println("timeout: ", timeout)
+			globalClient.Close()
+			return false
+		default:
+			if chclient.ClientStatus == "connected" {
+				return true
+			}
+		}
+	}
+}
+
+//export ChiselClose
+func ChiselClose() bool {
+	globalClient.Close()
+	return true
+}
+
 func (flag *headerFlags) String() string {
 	out := ""
 	for k, v := range flag.Header {
@@ -52,17 +85,6 @@ func (flag *headerFlags) Set(arg string) error {
 	flag.Header.Set(key, strings.TrimSpace(value))
 	return nil
 }
-func checkFile(c *chclient.Client) {
-	for {
-		if _, err := os.Stat("/data/user/0/com.chisel.box/files/isActive.txt"); err == nil {
-			continue
-		} else if errors.Is(err, os.ErrNotExist) {
-			log.Println("Tunnel: Disconnected , no file... ")
-			break
-		}
-	}
-	c.Close()
-}
 
 func client(args []string) error {
 	flags := flag.NewFlagSet("client", flag.ContinueOnError)
@@ -81,9 +103,6 @@ func client(args []string) error {
 	hostname := flags.String("hostname", "", "")
 	sni := flags.String("sni", "", "")
 	verbose := flags.Bool("v", false, "")
-	flags.Usage = func() {
-		os.Exit(0)
-	}
 	flags.Parse(args)
 	//pull out options, put back remaining args
 	args = flags.Args()
@@ -110,20 +129,16 @@ func client(args []string) error {
 	//ready
 	c, err := chclient.NewClient(&config)
 	if err != nil {
-		log.Fatal(err)
 	}
-
-	go checkFile(c)
+	globalClient = c
 
 	c.Debug = *verbose
 	go cos.GoStats()
 	ctx := cos.InterruptContext()
 	if err := c.Start(ctx); err != nil {
-		log.Fatal(err)
 	}
 
 	if err := c.Wait(); err != nil {
-		log.Fatal(err)
 	}
 
 	return err
